@@ -1,0 +1,5 @@
+*_test.go
+*.DS_Store
+*.csv
+*.json
+*.toml
