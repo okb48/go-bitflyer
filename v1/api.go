@@ -51,15 +51,15 @@ type Limit struct {
 
 // FromHeader X-xxxからLimitを取得
 func (p *Limit) FromHeader(h http.Header) {
-	period := h.Get("X-Ratelimit-Period") // 残
+	period := h.Get("X-Ratelimit-Period") // リセットまでの残秒数
 	if period != "" {
 		p.Period, _ = strconv.Atoi(period)
 	}
-	remain := h.Get("X-Ratelimit-Remaining") // 最大
+	remain := h.Get("X-Ratelimit-Remaining") // 残回数
 	if remain != "" {
 		p.Remain, _ = strconv.Atoi(remain)
 	}
-	t := h.Get("X-Ratelimit-Reset") // 残 -> 最大リセット
+	t := h.Get("X-Ratelimit-Reset") // リセットUTC時間(sec未満なし)
 	if t != "" {
 		reset, _ := strconv.ParseInt(t, 10, 64)
 		p.toTime(reset)
