@@ -17,20 +17,23 @@ var (
 	json = jsoniter.ConfigCompatibleWithStandardLibrary
 )
 
-type httpClient struct {
-	authConfig *auth.AuthConfig
+type client struct {
+	conf *auth.AuthConfig
 }
 
-func New() *httpClient {
-	return &httpClient{}
+func New() *client {
+	return &client{}
 }
 
-func (p *httpClient) Auth(conf *auth.AuthConfig) *httpClient {
-	p.authConfig = conf
+func (p *client) Auth(conf *auth.AuthConfig) *client {
+	p.conf = conf
 	return p
 }
 
-func (p *httpClient) Request(api api.API, req api.Request, result interface{}) (*http.Response, error) {
+// Request response
+// APILimit.Private(req.Header)
+// APILimit.Public(req.Header)
+func (p *client) Request(api api.API, req api.Request, result interface{}) (*http.Response, error) {
 	u, err := api.ToURL()
 	if err != nil {
 		return nil, errors.Wrapf(err, "set base url")
@@ -52,8 +55,8 @@ func (p *httpClient) Request(api api.API, req api.Request, result interface{}) (
 	}
 
 	// Private configがあれば、sets auth to header
-	if p.authConfig != nil {
-		header, err := auth.SetAuthHeaders(p.authConfig, api, req)
+	if p.conf != nil {
+		header, err := auth.SetAuthHeaders(p.conf, api, req)
 		if err != nil {
 			return nil, errors.Wrap(err, "can not generates auth, or sets header")
 		}
@@ -116,7 +119,7 @@ func (p *httpClient) Request(api api.API, req api.Request, result interface{}) (
 	defer res.Body.Close()
 
 	// check status code
-	if res.StatusCode != 200 {
+	if res.StatusCode != http.StatusOK {
 		return nil, errors.New("response status: " + res.Status)
 	}
 

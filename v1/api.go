@@ -27,6 +27,7 @@ func (api *API) ToURL() (*url.URL, error) {
 	return u, nil
 }
 
+// 基本的には5分毎リセット
 type APIHeaders struct {
 	Public  Limit
 	Private Limit
@@ -43,9 +44,9 @@ func (p *APIHeaders) IsCache(h http.Header) bool {
 }
 
 type Limit struct {
-	Period int
-	Remain int
-	Reset  time.Time
+	Period int       // Period is リセットまでの秒数
+	Remain int       // Remain is 残Requests
+	Reset  time.Time // Reset Remainの詳細時間(sec未満なし)
 }
 
 // FromHeader X-xxxからLimitを取得

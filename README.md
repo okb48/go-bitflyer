@@ -100,6 +100,10 @@ func main() {
       }
     }
   )}
+
+  if eg.Wait();err != nil {
+    log.Error(err)
+  }
 }
 ```
 

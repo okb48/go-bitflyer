@@ -44,10 +44,10 @@ func SetAuthHeaders(config *AuthConfig, api api.API, req api.Request) (*http.Hea
 
 	sign := hex.EncodeToString(mac.Sum(nil))
 
-	header := new(http.Header)
+	header := http.Header{}
 	header.Set("ACCESS-KEY", config.APIKey)
 	header.Set("ACCESS-TIMESTAMP", t)
 	header.Set("ACCESS-SIGN", sign)
 
-	return header, nil
+	return &header, nil
 }
