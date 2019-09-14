@@ -1,4 +1,4 @@
-package orders
+package cancels
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 )
 
 type Request struct {
-	ProductCode string `json:"product_code" url:"product_code"`
+	ProductCode types.ProductCode `json:"product_code" url:"product_code"`
 }
 
 type Response struct {
