@@ -220,7 +220,7 @@ func (c *Client) CancelOrderAll(req *corders.Request) (*corders.Response, *http.
 	return res, raw, nil
 }
 
-func (c *Client) CancelPosition(req *cpositions.Request) (*cpositions.Response, *http.Response, error) {
+func (c *Client) CancelByID(req *cpositions.Request) (*cpositions.Response, *http.Response, error) {
 	res := new(cpositions.Response)
 	raw, err := httpclient.New().Auth(c.AuthConfig).Request(NewAPI(c, cpositions.APIPath), req, res)
 	if err != nil {
