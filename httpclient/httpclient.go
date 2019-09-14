@@ -98,9 +98,9 @@ func (p *client) Request(api api.API, req api.Request, result interface{}) (*htt
 	Vary:[Accept-Encoding]
 	X-Content-Type-Options:[nosniff]
 	X-Frame-Options:[sameorigin]
-	X-Ratelimit-Period:[153]  ********* API Limit残
-	X-Ratelimit-Remaining:[494]  ********* API Limit
-	X-Ratelimit-Reset:[1566997170] ********* API Limit 復活
+	X-Ratelimit-Period:[153]  ********* API Limit 解消までの秒数
+	X-Ratelimit-Remaining:[494]  ********* API Limit 回数
+	X-Ratelimit-Reset:[1566997170] ********* API Limit リセット時間UTC(sec未満なし)
 	X-Xss-Protection:[1;
 	mode=block]]
 	ContentLength:-1

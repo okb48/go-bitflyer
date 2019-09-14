@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -64,6 +65,16 @@ func (p *Limit) FromHeader(h http.Header) {
 		reset, _ := strconv.ParseInt(t, 10, 64)
 		p.toTime(reset)
 	}
+}
+
+func (p *Limit) Check() error {
+	if p.Remain <= 0 {
+		return fmt.Errorf("api limit, has API Limit Remain:%d, Reset time: %s(%s)",
+			p.Remain,
+			p.Reset.Format("15:04:05"),
+			time.Now().Format("15:04:05"))
+	}
+	return nil
 }
 
 // int64 to time.Time
