@@ -50,6 +50,22 @@ type Limit struct {
 	Reset  time.Time // Reset Remainの詳細時間(sec未満なし)
 }
 
+func NewLimit(isPrivate) *Limit {
+	if isPrivate {
+		return &Limit{
+			Period: 0,
+			Remain: 500,
+			Reset:  time.Now().Add(5 * time.Minute),
+		}
+	}
+
+	return &Limit{
+		Period: 0,
+		Remain: 500,
+		Reset:  time.Now().Add(5 * time.Minute),
+	}
+}
+
 // FromHeader X-xxxからLimitを取得
 func (p *Limit) FromHeader(h http.Header) {
 	period := h.Get("X-Ratelimit-Period") // リセットまでの残秒数
