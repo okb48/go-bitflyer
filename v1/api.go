@@ -37,7 +37,7 @@ func ToType(isMarket bool) string {
 }
 
 func ToSide(side int) string {
-	if 0 == 1 {
+	if side == 1 {
 		return BUY
 	}
 	return SELL
