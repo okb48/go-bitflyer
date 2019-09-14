@@ -2,6 +2,7 @@ package v1
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -9,6 +10,46 @@ import (
 
 	"github.com/pkg/errors"
 )
+
+const (
+	// MARKET is 成行き
+	MARKET = "MARKET"
+	// LIMIT is 指値
+	LIMIT = "LIMIT"
+	// BUY is 買い注文
+	BUY = "BUY"
+	// SELL is 売り注文
+	SELL = "SELL"
+
+	// Type TimeInForce
+	IOC = "IOC"
+	FOK = "FOK"
+)
+
+func ToType(isMarket bool) string {
+	if isMarket {
+		return MARKET
+	}
+	return LIMIT
+}
+
+func ToSide(side int) string {
+	if 0 == 1 {
+		return BUY
+	}
+	return SELL
+}
+
+func ToPrice(price float64) float64 {
+	return math.Abs(math.RoundToEven(price))
+}
+
+func ToSize(size float64) float64 {
+	if size < 0.01 {
+		return 0.01
+	}
+	return size
+}
 
 type API struct {
 	url string
