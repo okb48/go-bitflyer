@@ -26,6 +26,7 @@ const (
 	IOC = "IOC"
 	FOK = "FOK"
 
+	APIREMAIN  = 500
 	TIMELAYOUT = "20060102.150405.999999999"
 )
 
@@ -105,14 +106,14 @@ func NewLimit(isPrivate bool) *Limit {
 	if isPrivate {
 		return &Limit{
 			Period: 0,
-			Remain: 500,
+			Remain: APIREMAIN,
 			Reset:  time.Now().Add(5 * time.Minute),
 		}
 	}
 
 	return &Limit{
 		Period: 0,
-		Remain: 500,
+		Remain: APIREMAIN,
 		Reset:  time.Now().Add(5 * time.Minute),
 	}
 }
@@ -136,6 +137,9 @@ func (p *Limit) FromHeader(h http.Header) {
 
 func (p *Limit) Check() error {
 	if p.Remain <= 0 {
+		if time.Now().After(p.Reset) { // APIRESET時間を過ぎていたらRemainを補充
+			p.Remain = APIREMAIN
+		}
 		return fmt.Errorf("api limit, has API Limit Remain:%d, Reset time: %s(%s)",
 			p.Remain,
 			p.Reset.Format("15:04:05"),
