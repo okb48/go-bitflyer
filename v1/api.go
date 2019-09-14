@@ -50,7 +50,7 @@ type Limit struct {
 	Reset  time.Time // Reset Remainの詳細時間(sec未満なし)
 }
 
-func NewLimit(isPrivate) *Limit {
+func NewLimit(isPrivate bool) *Limit {
 	if isPrivate {
 		return &Limit{
 			Period: 0,
