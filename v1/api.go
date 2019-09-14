@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -24,6 +25,8 @@ const (
 	// Type TimeInForce
 	IOC = "IOC"
 	FOK = "FOK"
+
+	TIMELAYOUT = "20060102.150405.999999999"
 )
 
 func ToType(isMarket bool) string {
@@ -49,6 +52,13 @@ func ToSize(size float64) float64 {
 		return 0.01
 	}
 	return size
+}
+
+func ToTimeByOrderID(s string) (time.Time, error) {
+	// Prefix を削除しつつ，format string for parse
+	s = strings.Replace(s[3:], "-", ".", -1)
+
+	return time.Parse(TIMELAYOUT, s)
 }
 
 type API struct {
