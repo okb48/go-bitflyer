@@ -72,12 +72,12 @@ func (p *T) Set(size float64) {
 
 // Lot is Size for order lot
 // p.Sizeに対応する解消符号でsizeが返ってくる
-func (p *T) Lot(side int) (bool, float64) {
+func (p *T) Lot(side int, tension float64) (bool, float64) {
 	if p.isFull(side) {
 		return true, 0
 	}
 
-	lot := -(p.Limit * p.bias())
+	lot := -(p.Limit * p.bias(tension))
 	if lot < 0 {
 		return false, lot
 	}
@@ -88,8 +88,8 @@ func (p *T) Lot(side int) (bool, float64) {
 }
 
 // bias is positions bias
-func (p *T) bias() float64 {
-	return math.Tanh(p.Size / p.Limit)
+func (p *T) bias(tension float64) float64 {
+	return math.Tanh(tension * p.Size / p.Limit)
 }
 
 // isFull is checks Limit&Size
