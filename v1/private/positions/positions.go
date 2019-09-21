@@ -1,6 +1,7 @@
 package positions
 
 import (
+	"math"
 	"net/http"
 
 	"github.com/go-numb/go-bitflyer/v1/time"
@@ -43,4 +44,62 @@ func (req *Request) Query() string {
 
 func (req *Request) Payload() []byte {
 	return nil
+}
+
+/*
+	# Positions managed with tanh()
+*/
+
+// T is Positions struct
+type T struct {
+	Min   float64
+	Size  float64
+	Limit float64
+}
+
+// NewT is new Positions struct
+func NewT(min, limit float64) *T {
+	return &T{
+		Min:   min,
+		Limit: limit,
+	}
+}
+
+// Set is sets size
+func (p *T) Set(size float64) {
+	p.Size = size
+}
+
+// Lot is Size for order lot
+// p.Sizeに対応する解消符号でsizeが返ってくる
+func (p *T) Lot(side int) (bool, float64) {
+	if p.isFull(side) {
+		return true, 0
+	}
+
+	lot := -(p.Limit * p.bias())
+	if lot < 0 {
+		return false, lot
+	}
+	if lot < p.Min {
+		return false, p.Min
+	}
+	return false, lot
+}
+
+// bias is positions bias
+func (p *T) bias() float64 {
+	return math.Tanh(p.Size / p.Limit)
+}
+
+// isFull is checks Limit&Size
+// 売り方向要望を受け、同方向建玉過多ならばisFull
+func (p *T) isFull(side int) bool {
+	if 0 < side && p.Limit < p.Size {
+		return true
+	} else if side < 0 && p.Size < -p.Limit {
+		return true
+	}
+
+	return false
 }
