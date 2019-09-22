@@ -3,17 +3,17 @@ package ticker
 import (
 	"net/http"
 
-	"github.com/go-numb/go-bitflyer/v1/public/markets"
 	"github.com/go-numb/go-bitflyer/v1/time"
+	"github.com/go-numb/go-bitflyer/v1/types"
 	"github.com/google/go-querystring/query"
 )
 
 type Request struct {
-	ProductCode markets.ProductCode `json:"product_code" url:"product_code"`
+	ProductCode types.ProductCode `json:"product_code" url:"product_code"`
 }
 
 type Response struct {
-	ProductCode markets.ProductCode `json:"product_code"`
+	ProductCode types.ProductCode `json:"product_code"`
 
 	Timestamp       time.BitflyerTime `json:"timestamp"`
 	TickID          int               `json:"tick_id"`

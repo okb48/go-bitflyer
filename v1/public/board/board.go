@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-numb/go-bitflyer/v1/public/markets"
+	"github.com/go-numb/go-bitflyer/v1/types"
 	"github.com/google/go-querystring/query"
 )
 
@@ -14,7 +14,7 @@ type Book struct {
 }
 
 type Request struct {
-	ProductCode markets.ProductCode `json:"product_code" url:"product_code"`
+	ProductCode types.ProductCode `json:"product_code" url:"product_code"`
 }
 
 type Response struct {

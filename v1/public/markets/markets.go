@@ -3,6 +3,8 @@ package markets
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/go-numb/go-bitflyer/v1/types"
 )
 
 type Request struct{}
@@ -10,8 +12,8 @@ type Request struct{}
 type Response []Market
 
 type Market struct {
-	ProductCode ProductCode `json:"product_code"`
-	Alias       ProductCode `json:"alias"`
+	ProductCode types.ProductCode `json:"product_code"`
+	Alias       types.ProductCode `json:"alias"`
 }
 
 type ProductCode string
