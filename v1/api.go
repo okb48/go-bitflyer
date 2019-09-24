@@ -49,6 +49,7 @@ func ToPrice(price float64) float64 {
 }
 
 func ToSize(size float64) float64 {
+	size = math.Abs(size)
 	if size < 0.01 {
 		return 0.01
 	}
